@@ -30,6 +30,6 @@ Cypress.Commands.add('enviar', (Name, LastName, Email, Text) => {
     cy.get('#lastName').type(LastName)
     cy.get('#email').type(Email)
     cy.get('#open-text-area').type(Text)
-    cy.get('button[type="submit"]').click()
+    cy.contains('button', 'Enviar').click()
     
 })
