@@ -25,11 +25,9 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 ///Para preenchimento de campos obrigatórios
-Cypress.Commands.add('enviar', (Name, LastName, Email, Text) => {
+Cypress.Commands.add('campos_obrigatorios', (Name, LastName, Email, Text) => {
     cy.get('#firstName').type(Name)
     cy.get('#lastName').type(LastName)
     cy.get('#email').type(Email)
     cy.get('#open-text-area').type(Text)
-    cy.contains('button', 'Enviar').click()
-    
 })
