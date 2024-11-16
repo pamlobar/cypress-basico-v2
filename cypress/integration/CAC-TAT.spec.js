@@ -13,7 +13,9 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     var varEmail = faker.internet.email()
     var varText = faker.commerce.productDescription()
     const varLongText = "Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA Teste de QA "
-    
+    const varTempo = 3000
+    const varLongText2 = Cypress._.repeat ('Teste de QA ', 200)
+
     ///Verificar título da aplicação na tela
     it('verifica o título da aplicação', function() {
         cy.title().should('be.equal', 'Central de Atendimento ao Cliente TAT')
@@ -38,34 +40,47 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     })
     ///Envio de formulário
     it('Preenche os campos obrigatórios e envia o formulário', function(){
+        cy.clock()
         cy.campos_obrigatorios(varName, varLastName, varEmail, varText)
         cy.contains('button', 'Enviar').click()
         cy.get('.success').should('be.visible')
         cy.contains('.success', 'Mensagem enviada com sucesso').should('be.visible')
+        cy.tick(varTempo)
+        cy.get('.success').should('not.be.visible')
     })
     ///Verificar obrigatoriedade dos campos, nenhum campo preenchido
     it('Valida campos obrigatórios, sem preenchimento de nenhum campo', function(){
+        cy.clock()
         cy.contains('button', 'Enviar').click()
         cy.get('.error').should('be.visible')
         cy.contains('.error', 'Valide os campos obrigatórios!').should('be.visible')
+        cy.tick(varTempo)
+        cy.contains('.error', 'Valide os campos obrigatórios!').should('not.be.visible')
     })
     ///Verificar obrigatoriedade dos campos, apenas nome preenchido
     it('valida campos obrigatórios, apenas nome', function(){
+        cy.clock()
         cy.get('#firstName').type(varName)
         cy.contains('button', 'Enviar').click()
         cy.get('.error').should('be.visible')
         cy.contains('.error', 'Valide os campos obrigatórios!').should('be.visible')
+        cy.tick(varTempo)
+        cy.contains('.error', 'Valide os campos obrigatórios!').should('not.be.visible')
     })
     ///Verificar obrigatoriedade dos campos, nome e sobrenome preenchido
     it('valida campos obrigatórios, apenas nome e sobrenome', function(){
+        cy.clock()
         cy.get('#firstName').type(varName)
         cy.get('#lastName').type(varLastName)
         cy.contains('button', 'Enviar').click()
         cy.get('.error').should('be.visible')
         cy.contains('.error', 'Valide os campos obrigatórios!').should('be.visible')
+        cy.tick(varTempo)
+        cy.contains('.error', 'Valide os campos obrigatórios!').should('not.be.visible')
     })
     ///Verificar obrigatoriedade dos campos, nome, sobrenome e email preenchido
     it('valida campos obrigatórios, apenas nome, sobrenome e email', function(){
+        cy.clock()
         cy.get('button[type="submit"]').click()
         cy.get('#firstName').type(varName)
         cy.get('#lastName').type(varLastName)
@@ -73,9 +88,12 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('button[type="submit"]').click()
         cy.get('.error').should('be.visible')
         cy.contains('.error', 'Valide os campos obrigatórios!').should('be.visible')
+        cy.tick(varTempo)
+        cy.contains('.error', 'Valide os campos obrigatórios!').should('not.be.visible')
     })
     ///Verificar obrigatoriedade dos campos, nome, sobrenome e email preenchido porém invalido 1
     it('valida campos obrigatórios, apenas nome, sobrenome e email, porém email inválido 1', function(){
+        cy.clock()
         cy.get('#firstName').type(varName)
         cy.get('#lastName').type(varLastName)
         cy.get('#email').type('email')
@@ -83,9 +101,12 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('button[type="submit"]').click()
         cy.get('.error').should('be.visible')
         cy.contains('.error', 'Valide os campos obrigatórios!').should('be.visible')
+        cy.tick(varTempo)
+        cy.contains('.error', 'Valide os campos obrigatórios!').should('not.be.visible')
     })
     ///Verificar obrigatoriedade dos campos, nome, sobrenome e email preenchido porém invalido 2
     it('valida campos obrigatórios, apenas nome, sobrenome e email, porém email inválido 2', function(){
+        cy.clock()
         cy.get('#firstName').type(varName)
         cy.get('#lastName').type(varLastName)
         cy.get('#email').type('email@')
@@ -93,9 +114,12 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('button[type="submit"]').click()
         cy.get('.error').should('be.visible')
         cy.contains('.error', 'Valide os campos obrigatórios!').should('be.visible')
+        cy.tick(varTempo)
+        cy.contains('.error', 'Valide os campos obrigatórios!').should('not.be.visible')
     })
     ///Verificar obrigatoriedade dos campos, nome, sobrenome e email preenchido porém invalido 3
     it('valida campos obrigatórios, apenas nome, sobrenome e email, porém email inválido 3', function(){
+        cy.clock()
         cy.get('#firstName').type(varName)
         cy.get('#lastName').type(varLastName)
         cy.get('#email').type('email@email')
@@ -103,9 +127,12 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('button[type="submit"]').click()
         cy.get('.error').should('be.visible')
         cy.contains('.error', 'Valide os campos obrigatórios!').should('be.visible')
+        cy.tick(varTempo)
+        cy.contains('.error', 'Valide os campos obrigatórios!').should('not.be.visible')
     })
     ///Verificar obrigatoriedade dos campos, nome, sobrenome e email preenchido porém invalido 4
     it('valida campos obrigatórios, apenas nome, sobrenome e email, porém email inválido 4', function(){
+        cy.clock()
         cy.get('#firstName').type(varName)
         cy.get('#lastName').type(varLastName)
         cy.get('#email').type('email@email.')
@@ -113,9 +140,12 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('button[type="submit"]').click()
         cy.get('.error').should('be.visible')
         cy.contains('.error', 'Valide os campos obrigatórios!').should('be.visible')
+        cy.tick(varTempo)
+        cy.contains('.error', 'Valide os campos obrigatórios!').should('not.be.visible')
     })
     ///Verificar obrigatoriedade dos campos, nome, sobrenome e email preenchido porém invalido 5
     it('valida campos obrigatórios, apenas nome, sobrenome e email, porém email inválido 5', function(){
+        cy.clock()
         cy.get('#firstName').type(varName)
         cy.get('#lastName').type(varLastName)
         cy.get('#email').type('email@email,email')
@@ -123,6 +153,8 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('button[type="submit"]').click()
         cy.get('.error').should('be.visible')
         cy.contains('.error', 'Valide os campos obrigatórios!').should('be.visible')
+        cy.tick(varTempo)
+        cy.contains('.error', 'Valide os campos obrigatórios!').should('not.be.visible')
     })
     ///Validar textos longos no campo de assunto
     it('Validar textos bem longos no campo de descrição da ajuda', function(){
@@ -368,12 +400,62 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('.success').should('be.visible')
         cy.contains('.success', 'Mensagem enviada com sucesso').should('be.visible')
     })
-        //Acessa a página da política de privacidade removendo o target e então clicando no link
-        it('Acessa a página da política de privacidade removendo o target e então clicando no link', function(){
-            cy.get('#privacy a')
-                .invoke('removeAttr', 'target')
-                .click()
-            cy.contains('CAC TAT - Política de privacidade').should('be.visible')
-        })
+    //Acessa a página da política de privacidade removendo o target e então clicando no link
+    it('Acessa a página da política de privacidade removendo o target e então clicando no link', function(){
+        cy.get('#privacy a')
+             .invoke('removeAttr', 'target')
+             .click()
+        cy.contains('CAC TAT - Política de privacidade').should('be.visible')
+    })
+    //Testando funcionalidade invoke para mostrar itens ocultos e para ocultar itens
+    it('Exibe e esconde as mensagens de sucesso e erro usando o .invoke', function() {
+        cy.get('.success')
+        //mostra que a msg de sucesso nao esta visivel na tela
+          .should('not.be.visible')
+        //força a msg de sucesso visivel na tela  
+          .invoke('show')
+        //mostra que a msg de sucesso esta visivel na tela  
+          .should('be.visible')
+          .and('contain', 'Mensagem enviada com sucesso.')
+        //esconde a msg de sucesso  
+          .invoke('hide')
+        //mostra que a msg de sucesso nao esta visivel na tela
+          .should('not.be.visible')
+        cy.get('.error')
+           .should('not.be.visible')
+           .invoke('show')
+           .should('be.visible')
+           .and('contain', 'Valide os campos obrigatórios!')
+           .invoke('hide')
+           .should('not.be.visible')
+    })
+    ///Validar textos longos no campo de assunto
+    it('Validar textos bem longos no campo de descrição da ajuda', function(){
+        cy.get('#firstName').type(varName)
+        cy.get('#lastName').type(varLastName)
+        cy.get('#email').type(varEmail)
+        cy.get('#open-text-area')
+            .invoke('val', varLongText2)
+            .should('have.value', varLongText2)
+        cy.get('button[type="submit"]').click()
+        cy.get('.success').should('be.visible')
+        cy.contains('.success', 'Mensagem enviada com sucesso').should('be.visible')
+    })
+    ///faz uma requisição HTTP
+    it('Faz uma requisição HTTP', function(){
+        cy.request('http://cac-tat.s3.eu-central-1.amazonaws.com/index.html')
+        //Lendo a pagina na web e verificando algumas requests
+            .should(function(response){
+                const {status, statusText, body} = response
+                expect(status).to.equal(200)
+                expect(statusText).to.equal('OK')
+                expect(body).to.include('CAC TAT')
+            })          
+    })
+    // Desafio encontre o gato
+    it('Encontre o gato', function(){
+        cy.get('#cat')
+        .invoke('show')
+        .should('be.visible')         
+    })
   })
-
